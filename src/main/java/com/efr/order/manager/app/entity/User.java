@@ -17,7 +17,7 @@ public class User implements UserDetails {
     private Long id;
     @Length(min = 10,max = 10, message = "Длинна номера: 10 символов")
     @Pattern(regexp = "\\d+",message = "Номер должен содержать только цифры")
-    private String username;
+    private String phoneNumber;
     @Length(min = 8, max = 10,message = "Длинна пароля от 8 до 10 символов")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$", message = "Пароль должен содержать как минимум одну букву верхнего " +
             "и нижнего регистра, а также как минимум одну цифру и быть не менее 8 символов в длину")
@@ -29,7 +29,6 @@ public class User implements UserDetails {
 
     public User() {
     }
-
     public Long getId() {
         return id;
     }
@@ -38,9 +37,27 @@ public class User implements UserDetails {
         this.id = id;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public String getUsername() {
-        return username;
+        return phoneNumber;
     }
 
     @Override
@@ -61,20 +78,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return (Collection<? extends GrantedAuthority>) getRoles();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
